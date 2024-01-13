@@ -13,7 +13,7 @@ services:
     volumes:
       - db:/var/lib/mysql
   app:
-    image: springmxacrrepo/springbootapp:latest
+    image: springmxacrrepo.azurecr.io/springbootapp:latest
     depends_on:
       - mysqldb
     build: ./bezkoder-app
