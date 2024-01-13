@@ -1,36 +1,38 @@
 apiVersion: apps/v1
-kind: Deployment # Kubernetes resource kind we are creating
+kind: Deployment
 metadata:
-  name: spring-boot-k8s-deployment
+  name: my-springboot-deployment
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: spring-boot-k8s
-  replicas: 2 # Number of replicas that will be created for this deployment
+      app: springboot-app
   template:
     metadata:
       labels:
-        app: spring-boot-k8s
+        app: springboot-app
     spec:
       containers:
-        - name: spring-boot-k8s
-          image: springmxacrrepo.azurecr.io/springbootmx:latest # Image that will be used to containers in the cluster
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8080 # The port that the container is running on in the cluster
-
-
+      - name: my-springboot-app
+        image: springmxacrrepo.azurecr.io/springbootmx:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+# service type loadbalancer       
 ---
-
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: springboot-k8ssvc
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: springboot-app
+    k8s-app: springboot-app
+  name: springboot-app
 spec:
-  selector:
-    app: spring-boot-k8s
   ports:
-    - protocol: "TCP"
-      port: 8080 # The port that the service is running on in the cluster
-      targetPort: 8080 # The port exposed by the service
-  type: NodePort # type of the service.
+  - name: http
+    port: 6868
+    protocol: TCP
+    targetPort: 8080
+  type: LoadBalancer
+  selector:
+    app: springboot-app
