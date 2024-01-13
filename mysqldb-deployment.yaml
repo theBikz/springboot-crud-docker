@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mysqldb
+  name: mysqldb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysqldb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mysqldb
+    spec:
+      containers:
+        - env:
+            - name: MYSQLDB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_DATABASE
+                  name: env
+            - name: MYSQLDB_DOCKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_DOCKER_PORT
+                  name: env
+            - name: MYSQLDB_LOCAL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_LOCAL_PORT
+                  name: env
+            - name: MYSQLDB_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_ROOT_PASSWORD
+                  name: env
+            - name: MYSQLDB_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_USER
+                  name: env
+            - name: MYSQL_DATABASE
+            - name: MYSQL_ROOT_PASSWORD
+            - name: SPRING_DOCKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_DOCKER_PORT
+                  name: env
+            - name: SPRING_LOCAL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_LOCAL_PORT
+                  name: env
+          image: mysql:5.7
+          name: mysqldb
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: db
+      restartPolicy: Always
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: db
+status: {}
