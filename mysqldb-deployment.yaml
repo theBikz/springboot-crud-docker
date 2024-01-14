@@ -51,8 +51,6 @@ spec:
                 configMapKeyRef:
                   key: MYSQLDB_USER
                   name: env
-            - name: MYSQL_DATABASE
-            - name: MYSQL_ROOT_PASSWORD
             - name: SPRING_DOCKER_PORT
               valueFrom:
                 configMapKeyRef:
