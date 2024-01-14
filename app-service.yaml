@@ -9,7 +9,6 @@ metadata:
     io.kompose.service: app
   name: app
 spec:
-  type: LoadBalancer
   ports:
     - name: "6868"
       port: 6868
