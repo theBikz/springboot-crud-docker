@@ -37,7 +37,7 @@ spec:
               key: MYSQLDB_USER
               name: env
         - name: SPRING_APPLICATION_JSON
-          value: '{ "spring.datasource.url"  : "jdbc:mysql://mysqldb:/auto" : "update" }'
+          value: '{ "spring.datasource.url"  : "jdbc:mysql://mysqldb:/auto" , "spring.jpa.hibernate.ddl-auto": "update" }'
         - name: SPRING_DOCKER_PORT
           valueFrom:
             configMapKeyRef:
